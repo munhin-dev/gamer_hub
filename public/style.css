@@ -1,0 +1,43 @@
+p {
+  word-wrap: break-word;
+}
+
+textarea {
+  height: 100px;
+  box-sizing: border-box;
+  border: 2px solid #6c757d;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
+}
+
+.minus-btn,
+.delete-comment-btn,
+.content {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+}
+
+.minus-btn:hover,
+.plus-btn:hover {
+  opacity: 1 !important;
+}
+.thumbnail {
+  max-width: 250px;
+}
+
+.friends,
+.friend-request {
+  max-width: 250px;
+}
+
+.entry-form {
+  max-width: 450px;
+}
+.delete-btn {
+  top: -23px !important;
+}

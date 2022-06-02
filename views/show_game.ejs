@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="row">
+    <div class="col col-md-5 col-xl-4 col-xxl-3">
+      <div class="card mt-5 shadow">
+        <img class="card-img-top" src="<%= game.image_url  %>" alt="Card image cap">
+        <div class="card-body">
+          <div class="card-details">
+            <h6>Name: <span class="text-muted"> <%= game.game_name %></span> </h6>
+            <h6>Developer:<span class="text-muted"> <%= game.developer  %></span> </h6>
+            <h6>Publisher: <span class="text-muted"> <%= game.game_publisher  %></span></h6>
+            <h6>Released: <span class="text-muted"> <%= game.year_releases.toString().slice(4, 15) %></span></h6>
+            <h6>Genre: <span class="text-muted"> <%= game.genre  %> </span></h6>
+          </div>
+          <p><%= game.descriptions %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col col-xxl-5 mt-5">
+      <div>
+        <h3>Others who play this game</h3>
+        <div class="other-player d-flex">
+          <% players.forEach(player => { %>
+          <p><a class="btn btn-outline-secondary mx-1" href="/user/<%= player.username %>"><%= player.username %> </a></p>
+          <% }) %>
+        </div>
+      </div>
+      <div>
+        <h3>Posts</h3>
+        <% posts.forEach(post => { %>
+        <p><small>By <strong><%= post.username %></strong> <em>at <%= post.created_at.toString().slice(0,34) %></em> </small></p>
+        <div class="col-9 position-relative">
+          <% if (activeUser===post.user_id) { %>
+          <div class="delete-btn position-absolute top-0 end-0">
+            <form action="/posts/<%= post.id %>/<%= game.id  %>" method="post">
+              <input type="hidden" name="_method" value="delete" />
+              <button class="delete-comment-btn"><img src="/img/delete-btn.png" alt="" width="15"></button>
+            </form>
+          </div>
+          <% } %>
+          <div>
+            <p><%= post.content %></p>
+          </div>
+        </div>
+        <% }) %>
+
+        <form action="/posts/<%= game.id  %>" method="post">
+          <textarea class="border" name="content" rows="2" cols="50" required></textarea>
+          <br>
+          <button class="btn btn-secondary">Submit</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

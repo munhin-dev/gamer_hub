@@ -1,0 +1,124 @@
+<header class="container-fluid m-2">
+  <div class="row">
+    <div class="col">
+      <h1>Hello!! <%= name %></h1>
+    </div>
+  </div>
+</header>
+
+<main class="container-fluid">
+  <div class="row flex-column flex-xxl-row">
+    <div class="col col-xxl-2 d-flex align-items-xxl-center flex-column">
+      <div class="friends list-group col-10 my-2">
+        <h5>Friends</h5>
+        <% if (friends.length === 0) { %>
+        <h6 class="text-muted">You have no friends yet =( </h6>
+        <% } %>
+        <% friends.forEach(friend => { %>
+        <a href="/user/<%= friend.username %>" class="list-group-item list-group-item-action"><%= friend.username %>
+          <form action="/user/<%= friend.friend_id %>" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="finished" value="true">
+            <button class="minus-btn opacity-75 position-absolute top-0 end-0">
+              <img src="/img/delete.png" alt="" width="15">
+            </button>
+          </form>
+        </a>
+        <% }) %>
+      </div>
+
+      <div class=" friend-request list-group col col-lg-10 my-2">
+        <h5>Friend Request</h5>
+        <% if (requests.length === 0) { %>
+        <h6 class="text-muted">No unattended requests</h6>
+        <% } %>
+        <% requests.forEach(reqeust => { %>
+        <a class="list-group-item list-group-item-action" href="/user/<%= reqeust.username %>"><%= reqeust.username %></a>
+        <div class="buttons d-flex justify-content-end m-1">
+          <form action="/accept" method="post">
+            <input type="hidden" name="id" value="<%= reqeust.friend_id %>">
+            <button class="btn btn-success mx-1">Accept</button>
+          </form>
+          <form action="/reject" method="post">
+            <input type="hidden" name="id" value="<%= reqeust.friend_id %>">
+            <button class="btn btn-danger mx-1">Reject</button>
+          </form>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <div class="col col-xxl-10">
+      <a type="button" class="btn btn-secondary" href="games/new">Add Game</a>
+      <h2 class="my-3">Currently Playing</h2>
+      <div class="row row-cols-auto">
+        <% if (finishedGames.length===0) { %>
+        <div class="col-8 col-sm-5 alert alert-secondary" role="alert">
+          There are no games here, try adding some games using the add games button
+        </div>
+        <% } %>
+
+        <% games.forEach(game => { %>
+        <% if (game.finished) { %>
+        <div class="col thumbnail position-relative m-2 p-0">
+          <a href="/games/<%= game.id %>">
+            <img class="img-fluid" src="<%= game.image_url %>" alt="">
+          </a>
+          <div class="position-absolute top-0 end-0 d-flex flex-column-reverse">
+            <form action="/games/<%= game.id %>" method="POST">
+              <input type="hidden" name="_method" value="PUT">
+              <input type="hidden" name="finished" value="false">
+              <button class="minus-btn opacity-75">
+                <img src="/img/updated.png" alt="" width="25  ">
+              </button>
+            </form>
+            <form action="/games/<%= game.user_id %>/<%= game.id %>" method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <input type="hidden" name="finished" value="false">
+              <button class="minus-btn opacity-75">
+                <img src="/img/delete.png" alt="" width="25">
+              </button>
+            </form>
+          </div>
+        </div>
+        <% } %>
+        <% }) %>
+      </div>
+
+      <h2 class="my-3">Finished</h2>
+      <div class="row row-cols-auto">
+        <% if (stillPlaying.length===0) { %>
+        <div class="col-8 col-sm-5 alert alert-secondary" role="alert">
+          There are no games here, try adding some games using the add games button
+        </div>
+        <% } %>
+        <% games.forEach(game => { %>
+        <% if (!game.finished) { %>
+        <div class="col thumbnail position-relative m-2 p-0">
+          <a href="/games/<%= game.id %>">
+            <img class="img-fluid" src="<%= game.image_url %>" alt="">
+          </a>
+
+          <div class="position-absolute top-0 end-0 d-flex flex-column-reverse">
+            <form action="/games/<%= game.id %>" method="POST">
+              <input type="hidden" name="_method" value="PUT">
+              <input type="hidden" name="finished" value="true">
+              <button class="minus-btn opacity-75">
+                <img src="/img/updated.png" alt="" width="25">
+              </button>
+            </form>
+            <form action="/games/<%= game.user_id %>/<%= game.id %>" method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <input type="hidden" name="finished" value="true">
+              <button class="minus-btn opacity-75">
+                <img src="/img/delete.png" alt="" width="25">
+              </button>
+            </form>
+          </div>
+
+        </div>
+        <% } %>
+        <% }) %>
+      </div>
+
+</main>

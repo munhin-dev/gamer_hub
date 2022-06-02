@@ -1,0 +1,20 @@
+<main class="entry-form container form-group mt-5">
+  <form action="/games" method="post">
+    <label for="games">
+      <h6>Please select the game you would like to add:</h6>
+    </label>
+    <select class="form-control form-control-lg my-3" id="games" name="games">
+      <% games.forEach(game=> { %>
+      <option value="<%= game.id  %>"><%= game.game_name  %> </option>
+      <% }) %>
+    </select>
+    <label for="finished">
+      <h6>Have you finished the game?</h6>
+    </label>
+    <select class="form-control form-control-lg my-3 " name="finished" id="finished">
+      <option value="false">YES</option>
+      <option value="true">NO</option>
+    </select>
+    <button class="btn btn-secondary">Submit</button>
+  </form>
+</main>
