@@ -11,14 +11,11 @@ const db = new Pool({
   password: "password",
   database: "gamer_hub",
 });
-const unless = (middleware) => {
-  return (req, res, next) => {
-    if (req.path === "/login" || req.path === "/signup") {
-      return next();
-    } else {
-      return middleware(req, res, next);
-    }
-  };
+const unless = (middleware) => (req, res, next) => {
+  if (req.path === "/login" || req.path === "/signup") {
+    return next();
+  }
+  return middleware(req, res, next);
 };
 const middleware = (req, res, next) => {
   if (!req.session.userId) {
@@ -62,7 +59,7 @@ app.get("/", (req, res) => {
     "SELECT * FROM friends INNER JOIN users ON users.id=friends.friend_id WHERE user_id = $1",
     [req.session.userId]
   );
-  const friend_request = db.query(
+  const friendRequest = db.query(
     "SELECT * FROM friend_request INNER JOIN users ON users.id=friend_request.friend_id WHERE user_id = $1",
     [req.session.userId]
   );
@@ -83,17 +80,17 @@ app.get("/", (req, res) => {
   Promise.all([
     games,
     friends,
-    friend_request,
+    friendRequest,
     users,
     finishedGames,
     stillPlaying,
   ]).then((output) => {
-    const [games, friends, friend_request, users, finishedGames, stillPlaying] =
+    const [games, friends, friendRequest, users, finishedGames, stillPlaying] =
       output;
     res.render("index", {
       games: games.rows,
       friends: friends.rows,
-      requests: friend_request.rows,
+      requests: friendRequest.rows,
       name: users.rows[0].firstname,
       finishedGames: finishedGames.rows,
       stillPlaying: stillPlaying.rows,
@@ -184,7 +181,7 @@ app.get("/user/:username", (req, res) => {
 });
 
 app.get("/games/new", (req, res) => {
-  db.query("SELECT * FROM games", (err, results) => {
+  db.query("SELECT * FROM games").then((results) => {
     res.render("new_game_form", { games: results.rows });
   });
 });
@@ -243,10 +240,8 @@ app.delete("/games/:userId/:gameId", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  db.query(
-    "SELECT * FROM users WHERE username=$1",
-    [req.body.username],
-    (err, users) => {
+  db.query("SELECT * FROM users WHERE username=$1", [req.body.username]).then(
+    (users) => {
       if (users.rows.length === 0) {
         res.render("login", {
           error: "Invalid username or password",
@@ -274,31 +269,25 @@ app.post("/login", (req, res) => {
 app.put("/games/:id", (req, res) => {
   db.query(
     "UPDATE users_games SET finished=$1 where user_id =$2 AND game_id =$3",
-    [req.body.finished, req.session.userId, req.params.id],
-    (err, results) => {
-      res.redirect("/");
-    }
-  );
+    [req.body.finished, req.session.userId, req.params.id]
+  ).then(() => {
+    res.redirect("/");
+  });
 });
 
 app.post("/posts/:id", (req, res) => {
   db.query(
     "INSERT INTO posts (content, user_id, game_id, created_at) VALUES($1, $2, $3, current_timestamp)",
-    [req.body.content, req.session.userId, req.params.id],
-    (err, results) => {
-      res.redirect(`/games/${req.params.id}`);
-    }
-  );
+    [req.body.content, req.session.userId, req.params.id]
+  ).then(() => {
+    res.redirect(`/games/${req.params.id}`);
+  });
 });
 
 app.delete("/posts/:id/:gameID", (req, res) => {
-  db.query(
-    "DELETE FROM posts WHERE id = $1",
-    [req.params.id],
-    (err, results) => {
-      res.redirect(`/games/${req.params.gameID}`);
-    }
-  );
+  db.query("DELETE FROM posts WHERE id = $1", [req.params.id]).then(() => {
+    res.redirect(`/games/${req.params.gameID}`);
+  });
 });
 
 app.post("/accept", (req, res) =>
@@ -322,13 +311,11 @@ app.post("/accept", (req, res) =>
 );
 
 app.post("/reject", (req, res) => {
-  db.query(
-    "DELETE FROM friend_request WHERE friend_id = $1",
-    [req.body.id],
-    (err, results) => {
-      res.redirect("/");
-    }
-  );
+  db.query("DELETE FROM friend_request WHERE friend_id = $1", [
+    req.body.id,
+  ]).then(() => {
+    res.redirect("/");
+  });
 });
 
 app.delete("/logout", (req, res) => {
@@ -388,8 +375,8 @@ app.post(
           errors: [{ msg: "Account already exists!!" }],
         });
       } else {
-        bcrypt.genSalt(10).then((salt) => {
-          return bcrypt.hash(req.body.password, salt).then((hash) => {
+        bcrypt.genSalt(10).then((salt) =>
+          bcrypt.hash(req.body.password, salt).then((hash) => {
             db.query(
               "INSERT INTO users (firstname,lastname,username, password_digest, email_address) VALUES ($1, $2, $3, $4, $5)",
               [
@@ -400,8 +387,8 @@ app.post(
                 req.body.email,
               ]
             ).then(() => res.render("redirect", { layout: false }));
-          });
-        });
+          })
+        );
       }
     });
   }
