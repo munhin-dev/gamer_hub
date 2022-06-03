@@ -67,12 +67,10 @@ app.get("/", (req, res) => {
   const users = db.query("SELECT * FROM users WHERE id = $1", [
     req.session.userId,
   ]);
-
   const finishedGames = db.query(
     "SELECT * FROM users_games WHERE user_id = $1 AND finished=true",
     [req.session.userId]
   );
-
   const stillPlaying = db.query(
     "SELECT * FROM users_games WHERE user_id = $1 AND finished=false",
     [req.session.userId]
