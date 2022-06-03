@@ -20,7 +20,7 @@
         <h3>Others who play this game</h3>
         <div class="other-player d-flex">
           <% players.forEach(player => { %>
-          <p><a class="btn btn-outline-secondary mx-1" href="/user/<%= player.username %>"><%= player.username %> </a></p>
+          <p><a class="btn btn-outline-primary mx-1" href="/user/<%= player.username %>"><%= player.username %> </a></p>
           <% }) %>
         </div>
       </div>
@@ -33,7 +33,7 @@
           <div class="delete-btn position-absolute top-0 end-0">
             <form action="/posts/<%= post.id %>/<%= game.id  %>" method="post">
               <input type="hidden" name="_method" value="delete" />
-              <button class="delete-comment-btn"><img src="/img/delete-btn.png" alt="" width="15"></button>
+              <button class="delete-comment-btn"><img src="/img/delete-btn.png" alt="" width="10"></button>
             </form>
           </div>
           <% } %>
@@ -44,9 +44,9 @@
         <% }) %>
 
         <form action="/posts/<%= game.id  %>" method="post">
-          <textarea class="border" name="content" rows="2" cols="50" required></textarea>
+          <textarea class="form-control w-75" name="content" rows="2" cols="50" required></textarea>
           <br>
-          <button class="btn btn-secondary">Submit</button>
+          <button class="btn btn-primary">Submit</button>
         </form>
       </div>
     </div>

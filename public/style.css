@@ -8,15 +8,6 @@ p {
   word-wrap: break-word;
 }
 
-textarea {
-  height: 100px;
-  box-sizing: border-box;
-  border: 2px solid #6c757d;
-  border-radius: 4px;
-  background-color: #f8f8f8;
-  resize: none;
-}
-
 .minus-btn,
 .delete-comment-btn,
 .content {
@@ -44,6 +35,13 @@ textarea {
 .entry-form {
   max-width: 450px;
 }
+
 .delete-btn {
   top: -23px !important;
+}
+
+.btn-close:focus {
+  border: none;
+  border-color: none;
+  box-shadow: none;
 }

@@ -21,15 +21,15 @@
     </div>
 
     <div class="col col-xxl-10">
-      <% if (!isFriend) { %>
+      <% if (!disableRequest) { %>
       <form action="/reqeust/<%= user.id %>/<%= user.username %>" method="post">
-        <button class="btn btn-secondary">Send Friend Request</button>
+        <button class="btn btn-primary">Send Friend Request</button>
       </form>
       <% } %>
       <h2 class="my-3">Currently Playing</h2>
       <div class="row row-cols-auto">
         <% if (finishedGames.length===0) { %>
-        <div class="col-8 col-sm-5 alert alert-secondary" role="alert">
+        <div class="col-8 col-sm-5 alert alert-info" role="alert">
           There are no games here yet for this particular user
         </div>
         <% } %>
@@ -45,7 +45,7 @@
       <h2 class="my-3">Finished</h2>
       <div class="row row-cols-auto">
         <% if (stillPlaying.length===0) { %>
-        <div class="col-8 col-sm-5 alert alert-secondary" role="alert">
+        <div class="col-8 col-sm-5 alert alert-info" role="alert">
           There are no games here yet for this particular user
         </div>
         <% } %>

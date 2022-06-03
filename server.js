@@ -27,6 +27,7 @@ const middleware = (req, res, next) => {
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+app.use("/css", express.static("node_modules/bootstrap/dist/css"))
 app.use(expressLayouts);
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -123,10 +124,18 @@ app.get("/user/:username", (req, res) => {
   );
   const pendingRequest = user.then((user) =>
     db.query(
+      "SELECT * from friend_request where user_id = $1 and friend_id =$2",
+      [req.session.userId, user.rows[0].id]
+    )
+  );
+
+  const alreadyRequest = user.then((user) =>
+    db.query(
       "SELECT * from friend_request where user_id = $2 and friend_id =$1",
       [req.session.userId, user.rows[0].id]
     )
   );
+
   const alreadyFriend = user.then((user) =>
     db.query("SELECT * from friends where user_id = $2 and friend_id =$1", [
       req.session.userId,
@@ -153,8 +162,8 @@ app.get("/user/:username", (req, res) => {
     pendingRequest,
     finishedGames,
     stillPlaying,
+    alreadyRequest,
   ]).then((output) => {
-    console.log(output);
     const [
       games,
       user,
@@ -163,10 +172,12 @@ app.get("/user/:username", (req, res) => {
       pendingRequest,
       finishedGames,
       stillPlaying,
+      alreadyRequest,
     ] = output;
 
-    const isFriend =
+    const disableRequest =
       alreadyFriend.rows.length > 0 ||
+      alreadyRequest.rows.length > 0 ||
       pendingRequest.rows.length > 0 ||
       user.rows[0].id === req.session.userId;
     res.render("show_user", {
@@ -175,7 +186,7 @@ app.get("/user/:username", (req, res) => {
       friends: friends.rows,
       finishedGames: finishedGames.rows,
       stillPlaying: stillPlaying.rows,
-      isFriend,
+      disableRequest,
     });
   });
 });

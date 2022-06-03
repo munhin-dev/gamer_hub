@@ -20,7 +20,7 @@
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="finished" value="true">
             <button class="minus-btn opacity-75 position-absolute top-0 end-0">
-              <img src="/img/delete.png" alt="" width="15">
+              <img src="/img/delete-btn.png" alt="" width="10">
             </button>
           </form>
         </a>
@@ -49,11 +49,11 @@
     </div>
 
     <div class="col col-xxl-10">
-      <a type="button" class="btn btn-secondary" href="games/new">Add Game</a>
+      <a type="button" class="btn btn-primary" href="games/new">Add Game</a>
       <h2 class="my-3">Currently Playing</h2>
       <div class="row row-cols-auto">
         <% if (finishedGames.length===0) { %>
-        <div class="col-8 col-sm-5 alert alert-secondary" role="alert">
+        <div class="col-8 col-sm-5 alert alert-info" role="alert">
           There are no games here, try adding some games using the add games button
         </div>
         <% } %>
@@ -69,14 +69,14 @@
               <input type="hidden" name="_method" value="PUT">
               <input type="hidden" name="finished" value="false">
               <button class="minus-btn opacity-75">
-                <img src="/img/updated.png" alt="" width="25  ">
+                <img src="/img/updated.png" alt="" width="18">
               </button>
             </form>
             <form action="/games/<%= game.user_id %>/<%= game.id %>" method="POST">
               <input type="hidden" name="_method" value="DELETE">
               <input type="hidden" name="finished" value="false">
               <button class="minus-btn opacity-75">
-                <img src="/img/delete.png" alt="" width="25">
+                <img src="/img/delete-btn.png" alt="" width="15">
               </button>
             </form>
           </div>
@@ -88,7 +88,7 @@
       <h2 class="my-3">Finished</h2>
       <div class="row row-cols-auto">
         <% if (stillPlaying.length===0) { %>
-        <div class="col-8 col-sm-5 alert alert-secondary" role="alert">
+        <div class="col-8 col-sm-5 alert alert-info" role="alert">
           There are no games here, try adding some games using the add games button
         </div>
         <% } %>
@@ -104,14 +104,14 @@
               <input type="hidden" name="_method" value="PUT">
               <input type="hidden" name="finished" value="true">
               <button class="minus-btn opacity-75">
-                <img src="/img/updated.png" alt="" width="25">
+                <img src="/img/updated.png" alt="" width="18">
               </button>
             </form>
             <form action="/games/<%= game.user_id %>/<%= game.id %>" method="POST">
               <input type="hidden" name="_method" value="DELETE">
               <input type="hidden" name="finished" value="true">
               <button class="minus-btn opacity-75">
-                <img src="/img/delete.png" alt="" width="25">
+                <img src="/img/delete-btn.png" alt="" width="15">
               </button>
             </form>
           </div>
