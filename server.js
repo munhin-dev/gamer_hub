@@ -27,7 +27,7 @@ const middleware = (req, res, next) => {
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-app.use("/css", express.static("node_modules/bootstrap/dist/css"))
+app.use("/css", express.static("node_modules/bootstrap/dist/css"));
 app.use(expressLayouts);
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -53,46 +53,32 @@ app.use(unless(middleware));
 
 app.get("/", (req, res) => {
   const games = db.query(
-    "SELECT * FROM games INNER JOIN users_games ON games.id=users_games.game_id WHERE user_id = $1",
+    "SELECT id, image_url, user_id, finished FROM games INNER JOIN users_games ON games.id = users_games.game_id WHERE users_games.user_id = $1",
     [req.session.userId]
   );
-  const friends = db.query(
-    "SELECT * FROM friends INNER JOIN users ON users.id=friends.friend_id WHERE user_id = $1",
-    [req.session.userId]
-  );
-  const friendRequest = db.query(
-    "SELECT * FROM friend_request INNER JOIN users ON users.id=friend_request.friend_id WHERE user_id = $1",
-    [req.session.userId]
-  );
-  const users = db.query("SELECT * FROM users WHERE id = $1", [
+  const firstname = db.query("SELECT firstname FROM users WHERE id = $1", [
     req.session.userId,
   ]);
-  const finishedGames = db.query(
-    "SELECT * FROM users_games WHERE user_id = $1 AND finished=true",
+  const friends = db.query(
+    `SELECT username, friend_id FROM friends INNER JOIN users ON users.id = friends.friend_id WHERE user_id = $1`,
     [req.session.userId]
   );
-  const stillPlaying = db.query(
-    "SELECT * FROM users_games WHERE user_id = $1 AND finished=false",
+  const friendRequests = db.query(
+    "SELECT username,friend_id FROM friend_request INNER JOIN users ON users.id=friend_request.friend_id WHERE user_id = $1",
     [req.session.userId]
   );
 
-  Promise.all([
-    games,
-    friends,
-    friendRequest,
-    users,
-    finishedGames,
-    stillPlaying,
-  ]).then((output) => {
-    const [games, friends, friendRequest, users, finishedGames, stillPlaying] =
-      output;
+  Promise.all([games, firstname, friends, friendRequests]).then((output) => {
+    const [games, firstname, friends, friendRequests] = output;
+    const allFinished = games.rows.every((game) => game.finished);
+    const allNotFinished = games.rows.every((game) => !game.finished);
     res.render("index", {
       games: games.rows,
       friends: friends.rows,
-      requests: friendRequest.rows,
-      name: users.rows[0].firstname,
-      finishedGames: finishedGames.rows,
-      stillPlaying: stillPlaying.rows,
+      requests: friendRequests.rows,
+      name: firstname.rows[0].firstname,
+      allFinished,
+      allNotFinished,
     });
   });
 });
@@ -108,82 +94,33 @@ app.post("/reqeust/:id/:username", (req, res) => {
 
 app.get("/user/:username", (req, res) => {
   const games = db.query(
-    "SELECT * FROM games INNER JOIN users_games ON games.id=users_games.game_id INNER JOIN users ON users.id= users_games.user_id WHERE username = $1",
+    "SELECT games.id, game_name, image_url, finished FROM games INNER JOIN users_games ON games.id=users_games.game_id INNER JOIN users ON users.id= users_games.user_id WHERE username = $1",
     [req.params.username]
   );
-  const user = db.query("SELECT * FROM users where username = $1", [
+  const user = db.query("SELECT id, username FROM users where username = $1", [
     req.params.username,
   ]);
-  const friends = user.then((user) =>
-    db.query(
-      "SELECT * FROM friends INNER JOIN users ON users.id=friends.friend_id WHERE username != $1 AND friends.user_id = $2",
-      [req.params.username, user.rows[0].id]
-    )
+  const friends = db.query(
+    "SELECT friends_info.id, friends_info.username FROM friends INNER JOIN users AS friends_info ON friends_info.id = friends.friend_id INNER JOIN users AS user_info ON user_info.id = friends.user_id WHERE user_info.username = $1",
+    [req.params.username]
   );
-  const pendingRequest = user.then((user) =>
-    db.query(
-      "SELECT * from friend_request where user_id = $1 and friend_id =$2",
-      [req.session.userId, user.rows[0].id]
-    )
+  const isRelated = db.query(
+    "SELECT username from friends INNER JOIN users as friends_info ON friends.friend_id = friends_info.id WHERE user_id = $1 AND username = $2 UNION SELECT username from friend_request INNER JOIN users as friend_request_info ON friend_request.friend_id = friend_request_info.id WHERE user_id = $1 AND username = $2 UNION  SELECT username from friend_request INNER JOIN users as friend_request_info ON friend_request.user_id = friend_request_info.id WHERE friend_id = $1 AND username = $2",
+    [req.session.userId, req.params.username]
   );
-
-  const alreadyRequest = user.then((user) =>
-    db.query(
-      "SELECT * from friend_request where user_id = $2 and friend_id =$1",
-      [req.session.userId, user.rows[0].id]
-    )
-  );
-
-  const alreadyFriend = user.then((user) =>
-    db.query("SELECT * from friends where user_id = $2 and friend_id =$1", [
-      req.session.userId,
-      user.rows[0].id,
-    ])
-  );
-  const finishedGames = user.then((user) =>
-    db.query("SELECT * FROM users_games WHERE user_id = $1 AND finished=true", [
-      user.rows[0].id,
-    ])
-  );
-  const stillPlaying = user.then((user) =>
-    db.query(
-      "SELECT * FROM users_games WHERE user_id = $1 AND finished=false",
-      [user.rows[0].id]
-    )
-  );
-
-  Promise.all([
-    games,
-    user,
-    friends,
-    alreadyFriend,
-    pendingRequest,
-    finishedGames,
-    stillPlaying,
-    alreadyRequest,
-  ]).then((output) => {
-    const [
-      games,
-      user,
-      friends,
-      alreadyFriend,
-      pendingRequest,
-      finishedGames,
-      stillPlaying,
-      alreadyRequest,
-    ] = output;
-
+  
+  Promise.all([games, user, friends, isRelated]).then((output) => {
+    const [games, user, friends, isRelated] = output;
+    const allFinished = games.rows.every((game) => game.finished);
+    const allNotFinished = games.rows.every((game) => !game.finished);
     const disableRequest =
-      alreadyFriend.rows.length > 0 ||
-      alreadyRequest.rows.length > 0 ||
-      pendingRequest.rows.length > 0 ||
-      user.rows[0].id === req.session.userId;
+      isRelated.rows.length > 0 || user.rows[0].id === req.session.userId;
     res.render("show_user", {
       user: user.rows[0],
       games: games.rows,
       friends: friends.rows,
-      finishedGames: finishedGames.rows,
-      stillPlaying: stillPlaying.rows,
+      allFinished,
+      allNotFinished,
       disableRequest,
     });
   });

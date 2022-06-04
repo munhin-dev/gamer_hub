@@ -52,7 +52,7 @@
       <a type="button" class="btn btn-primary" href="games/new">Add Game</a>
       <h2 class="my-3">Currently Playing</h2>
       <div class="row row-cols-auto">
-        <% if (finishedGames.length===0) { %>
+        <% if (allNotFinished) { %>
         <div class="col-8 col-sm-5 alert alert-info" role="alert">
           There are no games here, try adding some games using the add games button
         </div>
@@ -87,7 +87,7 @@
 
       <h2 class="my-3">Finished</h2>
       <div class="row row-cols-auto">
-        <% if (stillPlaying.length===0) { %>
+        <% if (allFinished) { %>
         <div class="col-8 col-sm-5 alert alert-info" role="alert">
           There are no games here, try adding some games using the add games button
         </div>

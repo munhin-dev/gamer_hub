@@ -12,7 +12,7 @@
       <div class="friends list-group col-10 my-2">
         <h1>Friends</h1>
         <% if (friends.length === 0) { %>
-        <h6 class="text-muted">This user has not friends =( </h6>
+        <h6 class="text-muted">This user has no friends =( </h6>
         <% } %>
         <% friends.forEach(friend => { %>
         <a class="list-group-item list-group-item-action" href="/user/<%= friend.username %>"><%= friend.username %> </a>
@@ -28,7 +28,7 @@
       <% } %>
       <h2 class="my-3">Currently Playing</h2>
       <div class="row row-cols-auto">
-        <% if (finishedGames.length===0) { %>
+        <% if (allFinished) { %>
         <div class="col-8 col-sm-5 alert alert-info" role="alert">
           There are no games here yet for this particular user
         </div>
@@ -36,7 +36,7 @@
         <% games.forEach(game => { %>
         <% if (game.finished) { %>
         <div class="col thumbnail m-2 p-0">
-          <a href="/games/<%= game.game_id %>"> <img class="img-fluid" src="<%= game.image_url %>" alt=""> </a>
+          <a href="/games/<%= game.id %>"> <img class="img-fluid" src="<%= game.image_url %>" alt=""> </a>
         </div>
         <% } %>
         <% }) %>
@@ -44,7 +44,7 @@
 
       <h2 class="my-3">Finished</h2>
       <div class="row row-cols-auto">
-        <% if (stillPlaying.length===0) { %>
+        <% if (allNotFinished) { %>
         <div class="col-8 col-sm-5 alert alert-info" role="alert">
           There are no games here yet for this particular user
         </div>
@@ -52,10 +52,12 @@
         <% games.forEach(game => { %>
         <% if (!game.finished) { %>
         <div class="col thumbnail m-2 p-0">
-          <a href="/games/<%= game.game_id %>"> <img class="img-fluid" src="<%= game.image_url %>" alt=""> </a>
+          <a href="/games/<%= game.id %>"> <img class="img-fluid" src="<%= game.image_url %>" alt=""> </a>
         </div>
         <% } %>
         <% }) %>
       </div>
     </div>
 </main>
+
+
