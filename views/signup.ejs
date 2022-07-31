@@ -10,9 +10,10 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 
-<body class="container d-flex flex-sm-column justify-content-sm-center vh-100">
+<body class="container d-flex flex-column flex-md-column justify-content-sm-center">
   <% errors.forEach(error => { %>
-  <div class="col col-sm-10 col-md-8 col-lg-6 col-xl-4 alert alert-danger align-self-center " role="alert">
+    <% console.log(error) %>
+  <div class="col col-sm-10 col-md-8 col-lg-6 col-xl-4 alert alert-danger align-self-center mt-3" role="alert">
     <%= error.msg %>
   </div>
   <% }) %>

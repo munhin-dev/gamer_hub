@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Righteous&family=Roboto&display=swap");
 
 * {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 p {
@@ -23,9 +23,6 @@ p {
 .plus-btn:hover {
   opacity: 1 !important;
 }
-.thumbnail {
-  max-width: 250px;
-}
 
 .friends,
 .friend-request {
@@ -44,4 +41,23 @@ p {
   border: none;
   border-color: none;
   box-shadow: none;
+}
+
+.title-gamer,
+.title-hub {
+  font-family: "Righteous", cursive;
+  font-size: 2rem;
+}
+
+.title-gamer {
+  color: #00bc8c;
+}
+
+.login-gamer,
+.login-hub {
+  font-family: "Righteous", cursive;
+}
+
+.login-gamer {
+  color: #00bc8c;
 }
