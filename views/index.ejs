@@ -1,10 +1,15 @@
 <main class="container">
-  <div class="col mt-3 d-flex justify-content-between">
-    <h4>Hello, <%= name%> !!</h4>
-    <a class="btn btn-primary" href="games/new"> + Add Game </a>
+  <div class="row mt-3 justify-content-between">
+    <div class="col-auto">
+      <h4>Hello, <%= name%> !!</h4>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-primary" href="games/new"> + Add Game </a>
+    </div>
   </div>
+
   <div class="row flex-column-reverse flex-lg-row">
-    <div class="col col-lg-4 col-xl-3 d-flex flex-column">
+    <div class="col col-lg-4 d-flex flex-column" style="max-width: 300px">
       <div class="friends list-group col-10 my-2">
         <h5>Friends</h5>
         <% if (friends.length === 0) { %>
@@ -17,14 +22,13 @@
           <form action="/user/<%= friend.friend_id %>" method="POST">
             <input type="hidden" name="_method" value="DELETE" />
             <input type="hidden" name="finished" value="true" />
-            <button class="minus-btn opacity-75 position-absolute top-0 end-0">
-              <img src="/img/delete-btn.png" alt="" width="10" />
+            <button class="delete-btn opacity-75 position-absolute top-0 end-0">
+              <i class="fa-solid fa-xmark"></i>
             </button>
           </form>
         </a>
         <% }) %>
       </div>
-
       <div class="friend-request list-group col col-lg-10 my-2">
         <h5>Friend Request</h5>
         <% if (requests.length === 0) { %>
@@ -60,7 +64,7 @@
           button
         </div>
         <% } %> <% games.forEach(game => { %> <% if (game.finished) { %>
-        <div class="col-3 col-xl-2 p-0 m-1 position-relative">
+        <div class="col-4 p-0 m-1 position-relative" style="max-width: 180px">
           <a href="/games/<%= game.id %>">
             <img class="img-fluid" src="<%= game.image_url %>" alt="" />
           </a>
@@ -68,8 +72,8 @@
             <form action="/games/<%= game.id %>" method="POST">
               <input type="hidden" name="_method" value="PUT" />
               <input type="hidden" name="finished" value="false" />
-              <button class="minus-btn opacity-75">
-                <img src="/img/updated.png" alt="" width="18" />
+              <button class="edit-btn opacity-75">
+                <i class="fa-solid fa-rotate"></i>
               </button>
             </form>
             <form
@@ -78,8 +82,8 @@
             >
               <input type="hidden" name="_method" value="DELETE" />
               <input type="hidden" name="finished" value="false" />
-              <button class="minus-btn opacity-75">
-                <img src="/img/delete-btn.png" alt="" width="15" />
+              <button class="delete-btn opacity-75">
+                <i class="fa-solid fa-trash-can"></i>
               </button>
             </form>
           </div>
@@ -98,7 +102,7 @@
           button
         </div>
         <% } %> <% games.forEach(game => { %> <% if (!game.finished) { %>
-        <div class="col-3 col-xl-2 p-0 m-1 position-relative">
+        <div class="col-4 p-0 m-1 position-relative" style="max-width: 180px">
           <a href="/games/<%= game.id %>">
             <img class="img-fluid" src="<%= game.image_url %>" alt="" />
           </a>
@@ -107,8 +111,8 @@
             <form action="/games/<%= game.id %>" method="POST">
               <input type="hidden" name="_method" value="PUT" />
               <input type="hidden" name="finished" value="true" />
-              <button class="minus-btn opacity-75">
-                <img src="/img/updated.png" alt="" width="18" />
+              <button class="edit-btn opacity-75">
+                <i class="fa-solid fa-rotate"></i>
               </button>
             </form>
             <form
@@ -117,8 +121,8 @@
             >
               <input type="hidden" name="_method" value="DELETE" />
               <input type="hidden" name="finished" value="true" />
-              <button class="minus-btn opacity-75">
-                <img src="/img/delete-btn.png" alt="" width="15" />
+              <button class="delete-btn opacity-75">
+                <i class="fa-solid fa-trash-can"></i>
               </button>
             </form>
           </div>

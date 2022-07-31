@@ -8,9 +8,20 @@ p {
   word-wrap: break-word;
 }
 
-.minus-btn,
-.delete-comment-btn,
-.content {
+i {
+  color: white;
+}
+
+textarea {
+  resize: none;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+}
+
+.edit-btn,
+.delete-btn {
   background-color: transparent;
   background-repeat: no-repeat;
   border: none;
@@ -19,8 +30,8 @@ p {
   outline: none;
 }
 
-.minus-btn:hover,
-.plus-btn:hover {
+.edit-btn:hover,
+.delete-btn:hover {
   opacity: 1 !important;
 }
 
@@ -33,10 +44,6 @@ p {
   max-width: 450px;
 }
 
-.delete-btn {
-  top: -23px !important;
-}
-
 .btn-close:focus {
   border: none;
   border-color: none;
@@ -46,18 +53,12 @@ p {
 .title-gamer,
 .title-hub {
   font-family: "Righteous", cursive;
-  font-size: 2rem;
 }
 
 .title-gamer {
   color: #00bc8c;
 }
 
-.login-gamer,
-.login-hub {
-  font-family: "Righteous", cursive;
-}
-
-.login-gamer {
-  color: #00bc8c;
+.sign-up-form {
+  max-width: 350px;
 }

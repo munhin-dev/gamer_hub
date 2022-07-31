@@ -3,6 +3,9 @@ const app = express.Router();
 const { userValidationRules, validate } = require("../middleware");
 const bcrypt = require("bcrypt");
 const db = require("../db");
+const dayjs = require("dayjs");
+const relativeTime = require("dayjs/plugin/relativeTime");
+dayjs.extend(relativeTime);
 
 app.get("/", (req, res) => {
   const games = db.query(
@@ -88,7 +91,7 @@ app.get("/games/new", (req, res) => {
 app.get("/games/:id", (req, res) => {
   const games = db.query("SELECT * FROM games WHERE id = $1", [req.params.id]);
   const posts = db.query(
-    "SELECT * FROM users INNER JOIN posts ON posts.user_id = users.id WHERE game_id = $1",
+    "SELECT * FROM users INNER JOIN posts ON posts.user_id = users.id WHERE game_id = $1 ORDER BY created_at ASC",
     [req.params.id]
   );
   const users = db.query(
@@ -103,6 +106,7 @@ app.get("/games/:id", (req, res) => {
       posts: posts.rows,
       activeUser: req.session.userId,
       players: users.rows,
+      dayjs,
     });
   });
 });

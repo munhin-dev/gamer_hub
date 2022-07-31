@@ -36,7 +36,7 @@
     <div class="col-10 col-md-6 col-lg-5 col-xl-4 mt-5">
       <div>
         <h4>Others who play this game</h3>
-        <div class="other-player d-flex">
+        <div class="other-player d-flex flex-wrap">
           <% players.forEach(player => { %>
           <p>
             <a
@@ -54,7 +54,7 @@
         <p>
           <small
             >By <strong><%= post.username %></strong>
-            <em>at <%= post.created_at.toString().slice(0,34) %></em>
+             <%= dayjs().from(dayjs(post.created_at), true) %> ago
           </small>
         </p>
         <div class="col position-relative">
@@ -62,8 +62,8 @@
           <div class="delete-btn position-absolute top-0 end-0">
             <form action="/posts/<%= post.id %>/<%= game.id  %>" method="post">
               <input type="hidden" name="_method" value="delete" />
-              <button class="delete-comment-btn">
-                <img src="/img/delete-btn.png" alt="" width="10" />
+              <button class="delete-btn">
+                <i class="fa-solid fa-xmark"></i>
               </button>
             </form>
           </div>
