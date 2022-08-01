@@ -17,6 +17,7 @@ A server-side social networking site created using Bootstrap and Express.js fram
 
 ## To-do list
 
+- Add functionality to add more games.
 - Add reset password functionality.
 - Add support for personal profile picture.
 - Enable multi-page comment support
