@@ -11,8 +11,7 @@ const port = process.env.PORT || 8080;
 app.set("view engine", "ejs");
 
 app.use(express.static("public"));
-app.use("/css", express.static("node_modules/bootstrap/dist/css"));
-app.use("/theme", express.static("node_modules/bootswatch/dist/darkly"));
+app.use("/css", express.static("node_modules/bootswatch/dist/darkly"));
 app.use(expressLayouts);
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride(queryOverride));
