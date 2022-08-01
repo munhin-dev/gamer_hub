@@ -4,4 +4,4 @@ A social networking site created using Bootstrap and Express.js framework with P
 
 ![Alt text](./public/screenshot/Screenshot%202022-08-01_180243.png "Optional title")
 ![Alt text](./public/screenshot/Screenshot%202022-08-01_180400.png "Optional title")
-![Alt text](./public/screenshot/Screenshot%202022-08-01_180434.png"Optional title")
+![Alt text](./public/screenshot/Screenshot%202022-08-01_180434.png "Optional title")
