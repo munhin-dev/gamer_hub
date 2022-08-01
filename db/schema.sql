@@ -26,7 +26,6 @@ CREATE TABLE users_games (
     finished BOOLEAN NOT NULL
 );
 
-
 CREATE TABLE posts (
     content TEXT NOT NULL,
     user_id INT REFERENCES users (id),
@@ -40,9 +39,9 @@ CREATE TABLE friends (
     friend_id INT REFERENCES users (id)
 );
 
-
 CREATE TABLE friend_request (
     id SERIAL PRIMARY KEY,
-    user_id INT ,
+    user_id INT,
     friend_id INT
 );
+

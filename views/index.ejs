@@ -1,7 +1,7 @@
 <main class="container">
   <div class="row mt-3 justify-content-between">
     <div class="col-auto">
-      <h4>Hello, <%= name%> !!</h4>
+      <h4>Hello, <%= user.firstname %> !!</h4>
     </div>
     <div class="col-auto">
       <a class="btn btn-primary" href="games/new"> + Add Game </a>
@@ -55,7 +55,7 @@
     <div class="col">
       <h5 class="my-2">Currently Playing</h5>
       <div class="row row-cols-auto mx-auto">
-        <% if (allNotFinished) { %>
+        <% if (games.every((game) => !game.finished)) { %>
         <div
           class="col-10 col-xxl-8 mx-auto mx-xxl-0 alert alert-info"
           role="alert"
@@ -93,7 +93,7 @@
 
       <h5 class="my-3">Finished</h5>
       <div class="row row-cols-auto mx-auto">
-        <% if (allFinished) { %>
+        <% if (games.every((game) => game.finished)) { %>
         <div
           class="col-10 col-xxl-8 mx-auto mx-xxl-0 alert alert-info"
           role="alert"

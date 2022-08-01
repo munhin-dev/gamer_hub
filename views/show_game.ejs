@@ -1,9 +1,10 @@
 <div class="container">
   <div
     class="row flex-column flex-md-row align-items-center align-items-md-start"
+    style="max-width: 850px"
   >
-    <div class="col-10 col-md-5 col-lg-4 col-xl-3">
-      <div class="card mt-5 shadow">
+    <div class="col-10 col-md-5">
+      <div class="card mt-5">
         <img
           class="card-img-top"
           src="<%= game.image_url  %>"
@@ -33,9 +34,9 @@
         </div>
       </div>
     </div>
-    <div class="col-10 col-md-6 col-lg-5 col-xl-4 mt-5">
+    <div class="col-10 col-md-6 mt-3 mt-md-5">
       <div>
-        <h4>Others who play this game</h3>
+        <h5>Others who play this game</h5>
         <div class="other-player d-flex flex-wrap">
           <% players.forEach(player => { %>
           <p>
@@ -49,15 +50,15 @@
         </div>
       </div>
       <div>
-        <h4>Posts</h4>
+        <h5>Comments</h5>
         <% posts.forEach(post => { %>
-        <p>
-          <small
-            >By <strong><%= post.username %></strong>
-             <%= dayjs().from(dayjs(post.created_at), true) %> ago
-          </small>
-        </p>
-        <div class="col position-relative">
+        <div class="position-relative">
+          <em>
+            <small>
+              <strong><%= post.username %></strong>
+              <%= dayjs().from(dayjs(post.created_at), true) %> ago
+            </small>
+          </em>
           <% if (activeUser===post.user_id) { %>
           <div class="delete-btn position-absolute top-0 end-0">
             <form action="/posts/<%= post.id %>/<%= game.id  %>" method="post">
@@ -68,6 +69,8 @@
             </form>
           </div>
           <% } %>
+        </div>
+        <div class="co">
           <div>
             <p><%= post.content %></p>
           </div>
