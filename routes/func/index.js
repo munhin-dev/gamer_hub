@@ -75,17 +75,9 @@ async function rejectRequest(req, res) {
 
 //Handle Friends
 async function removeFriend(req, res) {
-  db.query("DELETE FROM friends WHERE user_id=$1 AND friend_id=$2", [
-    req.session.userId,
-    req.params.id,
-  ]).then(() =>
-    db
-      .query("DELETE FROM friends WHERE user_id=$2 AND friend_id=$1", [
-        req.session.userId,
-        req.params.id,
-      ])
-      .then(() => res.redirect("/"))
-  );
+  await Friends.remove(req.session.userId, req.params.id);
+  await Friends.remove(req.params.id, req.session.userId);
+  res.redirect("/");
 }
 
 //Handle Games

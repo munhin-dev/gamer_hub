@@ -17,6 +17,11 @@ class Friends {
     const sql = `INSERT INTO friends (user_id, friend_id) VALUES ($1, $2)`;
     await db.query(sql, [userId, friendId]);
   }
+
+  static async remove(userId, friendId) {
+    const sql = `DELETE FROM friends WHERE user_id=$1 AND friend_id=$2`;
+    await db.query(sql, [userId, friendId]);
+  }
 }
 
 module.exports = Friends;
