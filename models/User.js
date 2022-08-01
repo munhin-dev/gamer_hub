@@ -30,4 +30,5 @@ class User {
     await db.query(sql, [fname, lname, username, hash, email]);
   }
 }
+
 module.exports = User;
