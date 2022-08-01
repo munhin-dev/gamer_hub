@@ -17,7 +17,7 @@
   <body class="container">
     <div class="row flex-column mt-5">
       <form class="mx-auto sign-up-form" action="/signup" method="post">
-        <% errors.forEach(error => { %> <% console.log(error) %>
+        <% errors.forEach(error => { %> 
         <div class="alert alert-danger" role="alert"><%= error.msg %></div>
         <% }) %>
         <div class="text-end">
@@ -32,6 +32,8 @@
             id="fname"
             name="fname"
             required
+            value="<%= input?.fname %>"
+            method
           />
         </div>
         <div class="form-group my-2">
@@ -42,6 +44,7 @@
             id="lname"
             name="lname"
             required
+            value="<%= input?.lname %>"
           />
         </div>
         <div class="form-group my-2">
@@ -52,6 +55,7 @@
             id="username"
             name="username"
             required
+            value="<%= input?.username %>"
           />
         </div>
         <div class="form-group my-2">
@@ -62,6 +66,7 @@
             id="password"
             name="password"
             autocomplete="off"
+            value="<%= input?.password %>"
             required
           />
         </div>
@@ -72,6 +77,7 @@
             class="form-control"
             id="email"
             name="email"
+            value="<%= input?.email %>"
             required
           />
         </div>

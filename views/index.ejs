@@ -35,11 +35,11 @@
         <h6 class="text-muted">No unattended requests</h6>
         <% } %> <% requests.forEach(reqeust => { %>
         <a
-          class="list-group-item list-group-item-action"
+          class="list-group-item list-group-item-action rounded-bottom"
           href="/user/<%= reqeust.username %>"
           ><%= reqeust.username %></a
         >
-        <div class="buttons d-flex justify-content-end m-1">
+        <div class="buttons d-flex justify-content-end my-2">
           <form action="/accept" method="post">
             <input type="hidden" name="id" value="<%= reqeust.friend_id %>" />
             <button class="btn btn-success mx-1">Accept</button>

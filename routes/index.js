@@ -1,32 +1,32 @@
 const express = require("express");
 const app = express.Router();
-const routes = require("./func");
+const controller = require("../controller");
 const { userValidationRules, validate } = require("../middleware");
 
-app.get("/", routes.renderHome);
-app.get("/user/:username", routes.renderUser);
-app.get("/games/new", routes.renderForm);
-app.get("/games/:id", routes.renderGame);
+app.get("/", controller.renderHome);
+app.get("/user/:username", controller.renderUser);
+app.get("/games/new", controller.renderForm);
+app.get("/games/:id", controller.renderGame);
 
-app.post("/games", routes.addGame);
-app.put("/games/:id", routes.updateGame);
-app.delete("/games/:userId/:gameId", routes.removeGame);
+app.post("/games", controller.addGame);
+app.put("/games/:id", controller.updateGame);
+app.delete("/games/:userId/:gameId", controller.removeGame);
 
-app.post("/posts/:id", routes.addPosts);
-app.delete("/posts/:id/:gameID", routes.removePosts);
+app.post("/posts/:id", controller.addPosts);
+app.delete("/posts/:id/:gameID", controller.removePosts);
 
-app.post("/request/:id/:username", routes.createRequest);
-app.post("/accept", routes.acceptRequest);
-app.post("/reject", routes.rejectRequest);
+app.post("/request/:id/:username", controller.createRequest);
+app.post("/accept", controller.acceptRequest);
+app.post("/reject", controller.rejectRequest);
 
-app.delete("/user/:id", routes.removeFriend);
+app.delete("/user/:id", controller.removeFriend);
 
-app.get("/login", routes.renderLogin);
-app.post("/login", routes.handleLogin);
+app.get("/login", controller.renderLogin);
+app.post("/login", controller.handleLogin);
 
-app.get("/signup", routes.renderSignup);
-app.post("/signup", userValidationRules(), validate, routes.handleSignup);
+app.get("/signup", controller.renderSignup);
+app.post("/signup", userValidationRules(), validate, controller.handleSignup);
 
-app.delete("/logout", routes.handleLogout);
+app.delete("/logout", controller.handleLogout);
 
 module.exports = app;

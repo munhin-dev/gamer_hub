@@ -1,8 +1,8 @@
-const Games = require("../../models/Games");
-const User = require("../../models/User");
-const Posts = require("../../models/Posts");
-const Friends = require("../../models/Friends");
-const FriendRequest = require("../../models/FriendRequest");
+const Games = require("../models/Games");
+const User = require("../models/User");
+const Posts = require("../models/Posts");
+const Friends = require("../models/Friends");
+const FriendRequest = require("../models/FriendRequest");
 const bcrypt = require("bcrypt");
 const dayjs = require("dayjs");
 const relativeTime = require("dayjs/plugin/relativeTime");
@@ -52,7 +52,7 @@ function renderLogin(req, res) {
 }
 
 function renderSignup(req, res) {
-  res.render("signup", { layout: false, errors: [] });
+  res.render("signup", { layout: false, errors: [], input: {} });
 }
 
 //Handle Friend Request
@@ -62,9 +62,10 @@ async function createRequest(req, res) {
 }
 
 async function acceptRequest(req, res) {
-  await FriendRequest.delete(req.body.id);
-  await Friends.add(req.session.userId, req.body.id);
-  await Friends.add(req.body.id, req.session.userId);
+  const deleteRequest = FriendRequest.delete(req.body.id);
+  const addFriend1 = Friends.add(req.session.userId, req.body.id);
+  const addFriend2 = Friends.add(req.body.id, req.session.userId);
+  await Promise.all([deleteRequest, addFriend1, addFriend2]);
   res.redirect("/");
 }
 
@@ -75,8 +76,9 @@ async function rejectRequest(req, res) {
 
 //Handle Friends
 async function removeFriend(req, res) {
-  await Friends.remove(req.session.userId, req.params.id);
-  await Friends.remove(req.params.id, req.session.userId);
+  const removeFriend1 = Friends.remove(req.session.userId, req.params.id);
+  const removeFriend2 = Friends.remove(req.params.id, req.session.userId);
+  await Promise.all([removeFriend1, removeFriend2]);
   res.redirect("/");
 }
 
@@ -110,43 +112,28 @@ async function addPosts(req, res) {
 }
 
 async function removePosts(req, res) {
-  Posts.delete(req.params.id);
+  await Posts.delete(req.params.id);
   res.redirect(`/games/${req.params.gameID}`);
 }
 
 //Handle Login
 async function handleLogin(req, res) {
+  const err = { error: "Invalid username or password", layout: false };
   const user = await User.getOneByUsername(req.body.username);
-  if (!user) {
-    res.render("login", {
-      error: "Invalid username or password",
-      layout: false,
-    });
-    return;
-  }
+  if (!user) return res.render("login", err);
   const result = await bcrypt.compare(req.body.password, user.password_digest);
-  if (result) {
-    req.session.userId = user.id;
-    res.redirect("/");
-  } else {
-    res.render("login", {
-      error: "Invalid username or password",
-      layout: false,
-    });
-  }
+  if (!result) return res.render("login", err);
+  req.session.userId = user.id;
+  res.redirect("/");
 }
 
 //Handle Signup
 async function handleSignup(req, res) {
   const { email, username, fname, lname, password } = req.body;
+  const errors = [{ msg: "Account exists with same email or username" }];
+  const config = { layout: false, errors, input: req.body };
   const user = await User.getByUsernameOrEmail(email, username);
-  if (user.length > 0) {
-    res.render("signup", {
-      layout: false,
-      errors: [{ msg: "Account already exists!!" }],
-    });
-    return;
-  }
+  if (user.length > 0) return res.render("signup", config);
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
   await User.create(fname, lname, username, hash, email);
