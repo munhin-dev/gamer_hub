@@ -6,6 +6,7 @@ const { queryOverride, unless, hasLogin } = require("./middleware");
 const { sessionConfig } = require("./config");
 const app = express();
 const router = require("./routes");
+const port = process.env.PORT || 8080;
 
 app.set("view engine", "ejs");
 
@@ -18,6 +19,6 @@ app.use(session(sessionConfig));
 app.use(unless(hasLogin));
 app.use(router);
 
-app.listen(8080, () => {
-  console.log("listening on port 8080");
+app.listen(port, () => {
+  console.log(`listening on port ${port}`);
 });
