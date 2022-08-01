@@ -4,6 +4,9 @@ A server-side social networking site created using Bootstrap and Express.js fram
 
 See live project [here](https://gamer-hub-67450.herokuapp.com)
 
+- ID: Favy1944 and Password: eu7ai3VoTu@
+- ID: Mazince1945 and Password: Yae6abev@
+
 ![Alt text](./public/screenshot/Screenshot%202022-08-01_180243.png "Optional title")
 ![Alt text](./public/screenshot/Screenshot%202022-08-01_180434.png "Optional title")
 ![Alt text](./public/screenshot/Screenshot%202022-08-01_180400.png "Optional title")
