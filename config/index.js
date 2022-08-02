@@ -1,7 +1,7 @@
 const sessionConfig = {
   secret: "keyboard cat",
-  cookie: { maxAge: 604800000 },
-  resave: true,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 },
+  resave: false,
   saveUninitialized: true,
 };
 
