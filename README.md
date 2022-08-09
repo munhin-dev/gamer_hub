@@ -9,7 +9,6 @@ See live project [here](https://gamer-hub-67450.herokuapp.com)
 
 ![Alt text](./public/screenshot/Screenshot%202022-08-01_180243.png "Optional title")
 ![Alt text](./public/screenshot/Screenshot%202022-08-02%20082444.png "Optional title")
-![Alt text](./public/screenshot/Screenshot%202022-08-01_180400.png "Optional title")
 
 ## Technologies
 
