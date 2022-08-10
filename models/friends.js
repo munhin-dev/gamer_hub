@@ -11,13 +11,19 @@ const friends = {
     const res = await db.query(sql, [username]);
     return res.rows;
   },
-  async add(userId, friendId) {
+  add(userId, friendId) {
     const sql = `INSERT INTO friends (user_id, friend_id) VALUES ($1, $2)`;
-    await db.query(sql, [userId, friendId]);
+    return Promise.all(sql, [
+      db.query(sql, [userId, friendId]),
+      db.query(sql, [friendId, userId]),
+    ]);
   },
-  async remove(userId, friendId) {
+  remove(userId, friendId) {
     const sql = `DELETE FROM friends WHERE user_id=$1 AND friend_id=$2`;
-    await db.query(sql, [userId, friendId]);
+    return Promise.all([
+      db.query(sql, [userId, friendId]),
+      db.query(sql, [friendId, userId]),
+    ]);
   },
 };
 

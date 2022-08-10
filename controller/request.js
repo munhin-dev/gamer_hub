@@ -7,9 +7,8 @@ const request = {
   },
   async accept(req, res) {
     const deleteRequest = models.request.delete(req.body.id);
-    const addFriend1 = models.friends.add(req.session.userId, req.body.id);
-    const addFriend2 = models.friends.add(req.body.id, req.session.userId);
-    await Promise.all([deleteRequest, addFriend1, addFriend2]);
+    const addFriend = await models.friends.add(req.session.userId, req.body.id);
+    await Promise.all([deleteRequest, addFriend]);
     res.redirect("/");
   },
   async reject(req, res) {
