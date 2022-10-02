@@ -8,11 +8,7 @@ if (process.env.NODE_ENV === "production") {
     },
   });
 } else {
-  db = new Pool({
-    user: "postgres",
-    password: "password",
-    database: "gamer_hub",
-  });
+  db = new Pool({ database: "gamer_hub" });
 }
 
 module.exports = db;
