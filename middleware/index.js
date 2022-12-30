@@ -46,13 +46,9 @@ const userValidationRules = () => [
     .isLength({ max: 32 }),
   body(
     "password",
-    "Password must be at least 5 characters long and contain one uppercase letters and one special case letter"
+    "Password must be at least 5 characters long"
   ).isStrongPassword({
     minLength: 5,
-    minLowercase: 0,
-    minUppercase: 1,
-    minNumbers: 0,
-    minSymbols: 1,
   }),
   body("email", "Invalid email address provided").isEmail(),
 ];
