@@ -64,9 +64,9 @@
           button
         </div>
         <% } %> <% games.forEach(game => { %> <% if (game.finished) { %>
-        <div class="col-4 p-0 m-1 position-relative" style="max-width: 180px; height: 180px">
+        <div class="col-4 p-0 m-1 position-relative" style="max-width: 180px; max-height: 180px">
           <a href="/games/<%= game.id %>">
-            <img src="<%= game.image_url %>" class="img-fluid" alt="" style="height:100%; aspect-ratio:1/1;"/>
+            <img src="<%= game.image_url %>" class="img-fluid" alt="" style="aspect-ratio:1/1;"/>
           </a>
           <div class="position-absolute top-0 end-0 d-flex flex-column-reverse">
             <form action="/games/<%= game.id %>" method="POST">
@@ -104,7 +104,7 @@
         <% } %> <% games.forEach(game => { %> <% if (!game.finished) { %>
         <div class="col-4 p-0 m-1 position-relative" style="max-width: 180px; max-height: 180px;">
           <a href="/games/<%= game.id %>">
-            <img class="img-fluid" src="<%= game.image_url %>" alt="" style="height:100%; aspect-ratio:1/1;"/>
+            <img class="img-fluid" src="<%= game.image_url %>" alt="" style=" aspect-ratio:1/1;"/>
           </a>
 
           <div class="position-absolute top-0 end-0 d-flex flex-column-reverse">
